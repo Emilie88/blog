@@ -1,0 +1,12 @@
+.container{
+    background-color: aqua;
+}
+.navbar{
+    justify-content: start!important;
+}
+.menu{
+    padding:3px;
+}
+form{
+    padding: 25px;
+}

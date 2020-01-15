@@ -2,12 +2,32 @@ security:
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         in_memory: { memory: null }
+        in_mysql: 
+            entity:
+                class:  App\Entity\User
+                property: email
+
+    encoders:
+        App\Entity\User:
+            algorithm: argon2i
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             anonymous: lazy
+            provider:  in_mysql
+            form_login: 
+                login_path: user_connect
+                check_path: user_connect
+                username_parameter: "user_connect[email]"
+                password_parameter: "user_connect[password]"
+                csrf_parameter: "user_connect[_token]"
+
+            logout: 
+                path: user_deconnect
+
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication

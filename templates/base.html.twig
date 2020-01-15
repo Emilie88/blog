@@ -2,11 +2,44 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        <title>
+            {% block title %}Welcome!{% endblock %}</title>
+            {% block stylesheets %}{% endblock %}
+            {% block head_css %}
+            <link rel="stylesheet" type="text/css" href="../../assets/style.css">
+                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+            {% endblock %}
+            {% block head_js %}
+                <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+            {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        <div class="container px-0" style="height:96vh;overflow: scroll;">
+        <header> {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}</header>
+            <nav class="navbar navbar-dark bg-dark">
+            <a class="menu" href="{{path("home")}}">Accueil</a>
+            <a class="menu" href="{{path("user_register")}}">Inscription</a>
+            <a class="menu" href="{{path("user_connect")}}">Connexion</a>
+             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <a class="menu" href="{{path("add-article")}}">Ajouter un article</a>
+                 <a class="menu" href="{{path("user_deconnect")}}">Deconnexion</a>
+                 <span style="color:white;">Bienvenue{{app.user.firstname}} {{app.user.lastname}}</span>
+            {% endif %}
+            <form method="post"  name="search">
+            <input type="text" placeholder="Search.." name="search">
+            <button class="btn btn-primary" type="submit">Search</button>
+            </form>
+           
+            </nav>
+            {% block body %}{% endblock %}
+            {% block javascripts %}{% endblock %}
+        </div>
     </body>
 </html>
+{# action="{{path("search_article")}}" #}
